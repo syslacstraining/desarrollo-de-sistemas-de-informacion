@@ -7,6 +7,7 @@
 </head>
 <body>
 
+	Vista nueva
 	Home
 
 </body>
