@@ -11,12 +11,63 @@ use Illuminate\Http\Request;
 class ProductosController extends Controller
 {
 
-	function getAll()
-	{
+	function getAll(Request $request)
+	{		
+		$search = $request->search;
+
+		$fecha_inicio = $request->fecha_inicio;
+		$fecha_fin = $request->fecha_fin;
+
+		$categoria = $request->categoria;
+
+		if(!isset($categoria))
+			$categoria="%";
+		else
+			$categoria="%".$categoria."%";
+
+		if(!isset($fecha_inicio))
+			$fecha_inicio="2022-01-01 00:00:00";
+
+		if(!isset($fecha_fin))
+			$fecha_fin="3000-01-01 23:59:59";
+
+
+		if(!isset($search))
+			$search="%";		
+		else
+			$search="%".$search."%";
+
+
 		$response = new \stdClass();
 		$response->success=true;
 
-		$productos = Producto::all();
+		//$productos = Producto::all(); //Recupera todos los elementos de la tabla
+
+		$productos = Producto::where(function($q) use ($search){
+			$q->where("productos.codigo","like",$search)
+			->orWhere("productos.nombre","like",$search);
+		})
+		
+		->select("productos.*")
+		
+		->with("categoria")
+		
+		->where("productos.created_at",">=",$fecha_inicio." 00:00:00")
+		->where("productos.created_at","<=",$fecha_fin. " 23:59:59")
+	
+		->where(function($q) use($categoria){
+
+			if($categoria!="%")
+			{
+				$q->where("categorias.nombre","like",$categoria);
+			}
+		})
+		//->where("categorias.nombre","like",$categoria)	
+
+
+		->leftJoin("categorias","productos.categoria_id","=","categorias.id")
+		->get();
+
 		$response->data=$productos;
 
 		return response()->json($response,200);
@@ -51,6 +102,8 @@ class ProductosController extends Controller
 		$producto = new Producto();
 		$producto->codigo = $request->codigo;
 		$producto->nombre = $request->nombre;
+		$producto->precio = $request->precio;
+		$producto->stock = $request->stock;
 		$producto->save();
 
 		$response->data=$producto;
@@ -67,6 +120,8 @@ class ProductosController extends Controller
 
 		$producto->codigo = $request->codigo;
 		$producto->nombre = $request->nombre;
+		$producto->precio = $request->precio;
+		$producto->stock = $request->stock;
 		$producto->save();
 
 		$response->data = $producto;
@@ -86,6 +141,14 @@ class ProductosController extends Controller
 
 		if(isset($request->nombre))
 		$producto->nombre = $request->nombre;
+
+		if(isset($request->precio))
+		$producto->precio = $request->precio;
+
+		if(isset($request->stock))
+		$producto->stock = $request->stock;
+
+
 
 		$producto->save();
 
