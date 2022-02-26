@@ -4,6 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\v1\ProductosController;
 use App\Http\Controllers\v1\CategoriasController;
+use App\User;
+
+use App\Http\Controllers\v2\SeguridadController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +40,9 @@ Route::post("/v1/categorias",[CategoriasController::class,"store"]);
 Route::put("/v1/categorias",[CategoriasController::class,"update"]);
 Route::patch("/v1/categorias",[CategoriasController::class,"patch"]);
 Route::delete("/v1/categorias/{id}",[CategoriasController::class,"delete"]);
+
+
+
+
+Route::post("/v1/seguridad/login",[SeguridadController::class,"login"]);
+
