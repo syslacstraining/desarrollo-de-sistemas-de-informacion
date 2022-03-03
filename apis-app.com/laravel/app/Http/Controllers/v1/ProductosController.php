@@ -104,6 +104,7 @@ class ProductosController extends Controller
 		$producto->nombre = $request->nombre;
 		$producto->precio = $request->precio;
 		$producto->stock = $request->stock;
+		$producto->categoria_id = $request->categoria_id;
 		$producto->save();
 
 		$response->data=$producto;
@@ -122,6 +123,7 @@ class ProductosController extends Controller
 		$producto->nombre = $request->nombre;
 		$producto->precio = $request->precio;
 		$producto->stock = $request->stock;
+		$producto->categoria_id = $request->categoria_id;
 		$producto->save();
 
 		$response->data = $producto;
@@ -148,6 +150,8 @@ class ProductosController extends Controller
 		if(isset($request->stock))
 		$producto->stock = $request->stock;
 
+		if(isset($request->categoria_id))
+		$producto->categoria_id = $request->categoria_id;
 
 
 		$producto->save();
