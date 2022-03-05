@@ -7,6 +7,7 @@ use App\Http\Controllers\v1\CategoriasController;
 use App\User;
 
 use App\Http\Controllers\v2\SeguridadController;
+use App\Http\Controllers\v1\FilesController;
 
 
 
@@ -47,8 +48,15 @@ Route::middleware('auth:api')->group(function(){
     Route::post("/v1/seguridad/usuarios",[SeguridadController::class,"store"]);
     Route::put("/v1/seguridad/usuarios",[CategoriasController::class,"update"]);
     Route::patch("/v1/seguridad/usuarios",[CategoriasController::class,"patch"]);
-    Route::delete("/v1/seguridad/usuarios/{id}",[CategoriasController::class,"delete"]);    
+    Route::delete("/v1/seguridad/usuarios/{id}",[CategoriasController::class,"delete"]);
+
+
+    
+
 });
+
+Route::get("/v1/files/{nombre}",[FilesController::class,"getFile"]);
+
 
 Route::post("/v1/seguridad/login",[SeguridadController::class,"login"]);
 

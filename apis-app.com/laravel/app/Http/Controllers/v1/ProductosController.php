@@ -105,6 +105,16 @@ class ProductosController extends Controller
 		$producto->precio = $request->precio;
 		$producto->stock = $request->stock;
 		$producto->categoria_id = $request->categoria_id;
+
+		if($request->image)
+		{
+			$file_name="/home/apismiap/public_html/files/".$request->image["nombre"].".".$request->image["extension"];
+
+			file_put_contents($file_name, base64_decode($request->image["data"]));
+
+			$producto->image_path = "http://apis.miapp.syslacsdev.com/files/".$request->image["nombre"].".".$request->image["extension"];
+		}
+		
 		$producto->save();
 
 		$response->data=$producto;
